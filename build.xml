@@ -4,7 +4,7 @@
 
 	<!-- warファイルの設定 -->
 	<property name="service.name" value="alpaca" />
-	<property name="war.home" value="C:/tomcat/webapps" />
+	<property name="war.home" value="C:/pbl/tomcat/webapps" />
 	<property name="dest.dir" value="build" />
 	<property name="dest.dir.metainf" value="${dest.dir}/META-INF" />
 	<property name="dest.dir.webinf" value="${dest.dir}/WEB-INF" />
