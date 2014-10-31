@@ -81,4 +81,29 @@ public class Alpaca {
 		return Response.status(200).entity(list).build();
 	}
 */
+
+	@GET
+	@Produces({MediaType.APPLICATION_XML})
+	@Path("/next")
+	public Response next() {
+		controller.next();
+		return Response.status(200).entity("<next>ok</next>").build();
+	}
+	
+	@GET
+	@Produces({MediaType.APPLICATION_XML})
+	@Path("/prev")
+	public Response prev() {
+		controller.prev();
+		return Response.status(200).entity("<prev>ok</prev>").build();
+	}
+	
+	@GET
+	@Produces({MediaType.APPLICATION_XML})
+	@Path("/getSlide")
+	public Response getSlideURL() {
+		return Response.status(200).entity(this.controller.getSlideURL()).build();
+	}
+
+	
 }
