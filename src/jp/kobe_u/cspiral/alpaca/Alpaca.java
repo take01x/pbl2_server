@@ -37,6 +37,18 @@ public class Alpaca {
 	}
 
 	@GET
+	@Produces({MediaType.APPLICATION_JSON})
+	@Path("/getComment")
+	public Response getComment(
+			@PathParam("presenter") final String presenter,
+			@DefaultValue("-1") @QueryParam("n") final int n) {
+		if (n < 0 && n != -1) {
+			return Response.status(403).entity("<comment>error</comment>").build();
+		}
+		return Response.status(200).entity(controller.getComment(controller.getPresenter(), n)).build();
+	}
+
+	@GET
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Path("/report")
 	public Response getReport(

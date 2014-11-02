@@ -8,6 +8,7 @@ import jp.kobe_u.cspiral.alpaca.model.Comment;
 import jp.kobe_u.cspiral.alpaca.model.Like;
 import jp.kobe_u.cspiral.alpaca.model.Presenters;
 import jp.kobe_u.cspiral.alpaca.model.Report;
+import jp.kobe_u.cspiral.alpaca.model.CommentReport;
 import jp.kobe_u.cspiral.alpaca.util.DBUtils;
 
 import com.mongodb.BasicDBObject;
@@ -45,7 +46,6 @@ public class AlpacaController {
 		COMMENT_COLLECTION.save(comment);
 	}
 
-
 	public Report getReport(String presenter, int n) {
 		DBObject query = new BasicDBObject();
 		query.put("presenter", presenter);
@@ -69,6 +69,30 @@ public class AlpacaController {
 		}
 
 		report.setLikes(likes);
+		report.setComments(comments);
+		return report;
+	}
+
+	public CommentReport getComment(String presenter, int n) {
+		DBObject query = new BasicDBObject();
+		query.put("presenter", presenter);
+		CommentReport report = new CommentReport(presenter);
+
+		Comment comment = new Comment();
+		List<Comment> comments = new ArrayList<Comment>();
+
+		DBObject sort = new BasicDBObject("_id", -1);
+		DBCursor cursor;
+		if (n == -1)
+			cursor = COMMENT_COLLECTION.find(query).sort(sort);
+		else
+			cursor = COMMENT_COLLECTION.find(query).sort(sort).limit(n);
+
+		for (DBObject _comment : cursor) {
+			comments.add(new Comment(
+					(Date)_comment.get("date"), (String)_comment.get("message")));
+		}
+
 		report.setComments(comments);
 		return report;
 	}

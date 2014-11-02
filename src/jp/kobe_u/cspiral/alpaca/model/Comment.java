@@ -16,23 +16,23 @@ public class Comment {
 
 	private Date date;
 	private String message;
-	
+
 	// default constructor for jaxb
 	public Comment() {
 		this(new Date(0), "");
 	}
-		
+
 	public Comment(Date date, String message) {
 		this.date = date;
 		this.message = message;
 	}
-	
-	@XmlElement(name="date")
+
+	@XmlElement(name="time")
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	public Date getDate() {
 		return date;
 	}
-	@XmlElement(name="message")
+	@XmlElement(name="comment")
 	public String getMessage() {
 		return message;
 	}
