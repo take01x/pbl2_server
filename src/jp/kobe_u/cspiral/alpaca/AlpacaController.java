@@ -56,28 +56,8 @@ public class AlpacaController {
 		List<Comment> comments = new ArrayList<Comment>();
 
 		DBCursor cursor = LIKE_COLLECTION.find(query).sort(new BasicDBObject("date", 1));
-		Calendar calendar1 = Calendar.getInstance();
-		Calendar calendar2 = Calendar.getInstance();
-		boolean likeFlag = true;
-		int likeCount = 0;
-		int diff = 0;
 		for (DBObject like : cursor) {
-			likeCount++;
-			if (likeFlag){
-				calendar1.setTime((Date)like.get("date"));
-				calendar1.set(Calendar.MINUTE, calendar1.get(Calendar.MINUTE)+1);
-				calendar1.set(Calendar.SECOND, 0);
-				likes.add(new Like(calendar1.getTime(),String.valueOf(likeCount)));
-				likeCount = 0;
-				likeFlag = false;
-			} else {
-				calendar2.setTime((Date)like.get("date"));
-				diff = calendar1.compareTo(calendar2);
-				if (diff > 0){
-					likeFlag = true;
-				}
-			}
-
+				likes.add(new Like((Date)like.get("date")));
 		}
 
 		report.setTotalLike(cursor.count());
