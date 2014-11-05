@@ -10,6 +10,7 @@ import jp.kobe_u.cspiral.alpaca.model.Like;
 import jp.kobe_u.cspiral.alpaca.model.Presenters;
 import jp.kobe_u.cspiral.alpaca.model.Report;
 import jp.kobe_u.cspiral.alpaca.model.CommentReport;
+import jp.kobe_u.cspiral.alpaca.model.Slide;
 import jp.kobe_u.cspiral.alpaca.util.DBUtils;
 
 import com.mongodb.BasicDBObject;
@@ -20,17 +21,19 @@ import com.mongodb.DBObject;
 public class AlpacaController {
 	private final String LIKE_COLLECTION_NAME = "like";
 	private final String COMMENT_COLLECTION_NAME = "comment";
+	private final String SLIDE_COLLECTION_NAME = "slide";
 
 	private DBCollection LIKE_COLLECTION;
 	private DBCollection COMMENT_COLLECTION;
+	private DBCollection SLIDE_COLLECTION;
 	private String presenter;
 
 	public AlpacaController() {
 		this.presenter = "c0";
 		this.LIKE_COLLECTION = DBUtils.getInstance().getDb().getCollection(LIKE_COLLECTION_NAME);
 		this.COMMENT_COLLECTION = DBUtils.getInstance().getDb().getCollection(COMMENT_COLLECTION_NAME);
+		this.SLIDE_COLLECTION = DBUtils.getInstance().getDb().getCollection(SLIDE_COLLECTION_NAME);
 	}
-
 
 	public void like() {
 		DBObject like = new BasicDBObject();
@@ -134,5 +137,41 @@ public class AlpacaController {
 		}
 		return presenters;
 	}
+	
+	public void next() {
+		DBObject query = new BasicDBObject();
+		query.put("presenter", this.presenter);
 
+		DBObject target = this.SLIDE_COLLECTION.findOne(query);
+		int currentPage = (int)target.get("currentPage");
+
+		if(currentPage < (int)target.get("totalSlides")) {
+			target.put("currentPage", currentPage + 1);
+			this.SLIDE_COLLECTION.save(target);
+		}
+	}
+
+	public void prev() {
+		DBObject query = new BasicDBObject();
+		query.put("presenter", this.presenter);
+
+		DBObject target = this.SLIDE_COLLECTION.findOne(query);
+		int currentPage = (int)target.get("currentPage");
+		
+		if(1 < currentPage) {
+			target.put("currentPage", currentPage - 1);
+			this.SLIDE_COLLECTION.save(target);
+		}
+	}
+	
+	public Slide getSlideURL() {
+		DBObject query = new BasicDBObject();
+		query.put("presenter", this.presenter);
+
+		DBObject target = this.SLIDE_COLLECTION.findOne(query);
+		String url = (String)target.get("slideImageBaseurl")
+						+ Integer.toString((int)target.get("currentPage"))
+						+ (String)target.get("slideImageBaseurlSuffix");
+		return new Slide(url);
+	}
 }
