@@ -3,6 +3,7 @@ package jp.kobe_u.cspiral.alpaca;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Calendar;
 
 import jp.kobe_u.cspiral.alpaca.model.Comment;
 import jp.kobe_u.cspiral.alpaca.model.Like;
@@ -54,12 +55,31 @@ public class AlpacaController {
 		List<Like> likes = new ArrayList<Like>();
 		List<Comment> comments = new ArrayList<Comment>();
 
-		DBCursor cursor = LIKE_COLLECTION.find(query);
-		/*
+		DBCursor cursor = LIKE_COLLECTION.find(query).sort(new BasicDBObject("date", 1));
+		Calendar calendar1 = Calendar.getInstance();
+		Calendar calendar2 = Calendar.getInstance();
+		boolean likeFlag = true;
+		int likeCount = 0;
+		int diff = 0;
 		for (DBObject like : cursor) {
-			likes.add(new Like((Date)like.get("date")));
+			likeCount++;
+			if (likeFlag){
+				calendar1.setTime((Date)like.get("date"));
+				calendar1.set(Calendar.MINUTE, calendar1.get(Calendar.MINUTE)+1);
+				calendar1.set(Calendar.SECOND, 0);
+				likes.add(new Like(calendar1.getTime(),String.valueOf(likeCount)));
+				likeCount = 0;
+				likeFlag = false;
+			} else {
+				calendar2.setTime((Date)like.get("date"));
+				diff = calendar1.compareTo(calendar2);
+				if (diff > 0){
+					likeFlag = true;
+				}
+			}
+
 		}
-		*/
+
 		report.setTotalLike(cursor.count());
 		DBObject sort = new BasicDBObject("_id", -1);
 		cursor = COMMENT_COLLECTION.find(query).sort(sort).limit(n);
