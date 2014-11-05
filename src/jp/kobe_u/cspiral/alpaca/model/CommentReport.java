@@ -18,7 +18,7 @@ public class CommentReport {
 		comments = new ArrayList<Comment>();
 	}
 
-	@XmlElement
+	@XmlElement(name="comment")
 	public Comment[] getComments() {
 		return comments.toArray(new Comment[comments.size()]);
 	}

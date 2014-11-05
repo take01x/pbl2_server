@@ -27,12 +27,12 @@ public class Comment {
 		this.message = message;
 	}
 
-	@XmlElement(name="time")
+	@XmlElement(name="date")
 	@XmlJavaTypeAdapter(DateAdapter.class)
 	public Date getDate() {
 		return date;
 	}
-	@XmlElement(name="comment")
+	@XmlElement(name="message")
 	public String getMessage() {
 		return message;
 	}

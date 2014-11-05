@@ -37,7 +37,7 @@ public class Alpaca {
 	}
 
 	@GET
-	@Produces({MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Path("/getComment")
 	public Response getComment(
 			@PathParam("presenter") final String presenter,
@@ -101,7 +101,7 @@ public class Alpaca {
 		controller.next();
 		return Response.status(200).entity("<next>ok</next>").build();
 	}
-	
+
 	@GET
 	@Produces({MediaType.APPLICATION_XML})
 	@Path("/prev")
@@ -109,7 +109,7 @@ public class Alpaca {
 		controller.prev();
 		return Response.status(200).entity("<prev>ok</prev>").build();
 	}
-	
+
 	@GET
 	@Produces({MediaType.APPLICATION_XML})
 	@Path("/getSlide")
@@ -117,5 +117,5 @@ public class Alpaca {
 		return Response.status(200).entity(this.controller.getSlideURL()).build();
 	}
 
-	
+
 }
