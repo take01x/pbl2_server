@@ -9,17 +9,17 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlRootElement(name="like")
 public class Like {
 	private Date date;
-	private String user;
-	
+	private String likeCount;
+
 	public Like() {
 		this(new Date(0), "");
 	}
 	public Like(Date date) {
 		this(date, "");
 	}
-	public Like(Date date, String user) {
+	public Like(Date date, String likeCount) {
 		this.date = date;
-		this.user = user;
+		this.likeCount = likeCount;
 	}
 
 	@XmlElement(name="date")
@@ -27,9 +27,9 @@ public class Like {
 	public Date getDate() {
 		return date;
 	}
-	
-	@XmlElement(name="user")
+
+	@XmlElement(name="likeCount")
 	public String getuser() {
-		return user;
+		return likeCount;
 	}
 }
