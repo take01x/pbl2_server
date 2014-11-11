@@ -117,5 +117,10 @@ public class Alpaca {
 		return Response.status(200).entity(this.controller.getSlideURL()).build();
 	}
 
-
+	@GET
+	@Produces({MediaType.APPLICATION_XML})
+	@Path("/getHandout")
+	public Response getHandoutHtml() {
+		return Response.status(200).entity(this.controller.getHandoutHtml()).build();
+	}
 }
