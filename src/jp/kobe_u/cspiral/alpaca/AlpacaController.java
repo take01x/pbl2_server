@@ -11,6 +11,7 @@ import jp.kobe_u.cspiral.alpaca.model.Presenters;
 import jp.kobe_u.cspiral.alpaca.model.Report;
 import jp.kobe_u.cspiral.alpaca.model.CommentReport;
 import jp.kobe_u.cspiral.alpaca.model.Slide;
+import jp.kobe_u.cspiral.alpaca.model.Handout;
 import jp.kobe_u.cspiral.alpaca.util.DBUtils;
 
 import com.mongodb.BasicDBObject;
@@ -173,5 +174,13 @@ public class AlpacaController {
 						+ Integer.toString((int)target.get("currentPage"))
 						+ (String)target.get("slideImageBaseurlSuffix");
 		return new Slide(url);
+	}
+
+	public Handout getHandoutHtml() {
+		DBObject query = new BasicDBObject();
+		query.put("presenter", this.presenter);
+
+		DBObject target = this.SLIDE_COLLECTION.findOne(query);
+		return new Handout((String)target.get("html"));
 	}
 }
